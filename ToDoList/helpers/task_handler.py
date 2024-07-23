@@ -8,17 +8,15 @@ db_path = "./database/todolist.db"
 # Do not call this function anywhere else
 # other functions in this module will handle creation of database if it doesn't already exist.
 def create():
-
-    database_path = "../database/todolist.db"
     query = '''
             CREATE TABLE Tasks(
                 id INTEGER PRIMARY KEY,
                 name TEXT,
                 description TEXT,
-                date DATE
+                date TEXT
             )'''
     
-    with sqlite3.connect(database_path) as conn:
+    with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
@@ -40,6 +38,7 @@ def add_task(name: str, description: str, date: date):
         # Checking and commiting if query executed successfully
         if cursor.rowcount() >= 1:
             conn.commit()
+            print("Added Task")
             return True
         
     return False
