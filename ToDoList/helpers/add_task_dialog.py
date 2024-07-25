@@ -28,6 +28,8 @@ class AddTaskDialog(QDialog):
             QLineEdit, QTextEdit, QDateEdit{
                 background-color: #F198FD;
                 color: #150226;
+                selection-background-color: #252226;
+                selection-color: #F198FD;
                 font-size: 16px;
                 font-weight: bold;
             }
@@ -35,7 +37,13 @@ class AddTaskDialog(QDialog):
             QLineEdit, QTextEdit {
                 padding: 2px 4px;
                 margin-bottom: 8px;
-                border: 0px;
+                border 0;
+                border-radius: 5px;
+            }
+                           
+            QDateEdit:focus, QLineEdit:focus, QTextEdit:focus {
+                border: 0.6px solid #252226;
+                border-radius: 5px;
             }
 
             QDialogButtonBox {
@@ -53,7 +61,7 @@ class AddTaskDialog(QDialog):
             
             QDialogButtonBox > *:hover, QDialogButtonBox > *:focus{
                 background-color: #E06AF9;
-                border: 1px solid #FFF2FF;                       
+                border: 1px solid #252226;                       
             }
         ''')
 
