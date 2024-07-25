@@ -11,7 +11,51 @@ class AddTaskDialog(QDialog):
 
         # Settings for Dialog Frame
         self.setWindowTitle("Add Task")
-        self.setFixedSize(600, 300)
+        self.setFixedSize(500, 250)
+        self.setStyleSheet('''
+            QDialog {
+                background-color: #150226;
+                font-family:"Avenir Next LT Pro"
+            }
+            
+            QLabel{
+                color: #FBC5FF;
+                font-size: 18px;
+                font-weight: bold;
+                margin-right: 6px;
+            }
+                           
+            QLineEdit, QTextEdit, QDateEdit{
+                background-color: #F198FD;
+                color: #150226;
+                font-size: 16px;
+                font-weight: bold;
+            }
+                           
+            QLineEdit, QTextEdit {
+                padding: 2px 4px;
+                margin-bottom: 8px;
+                border: 0px;
+            }
+
+            QDialogButtonBox {
+                margin-top: 16px;
+            }
+                           
+            QDialogButtonBox > * {
+                background-color: #F198FD;
+                color: #150226;
+                font-size: 18px;
+                font-weight: Bold;
+                padding: 4px 8px;
+                border-radius: 7.5px
+            }        
+            
+            QDialogButtonBox > *:hover, QDialogButtonBox > *:focus{
+                background-color: #E06AF9;
+                border: 1px solid #FFF2FF;                       
+            }
+        ''')
 
         # Layouts
         formLayout = QFormLayout(self)
@@ -26,13 +70,17 @@ class AddTaskDialog(QDialog):
         self.descriptionInput = QTextEdit()
         self.dateInput = QDateEdit(QDate.currentDate())
 
-        # Name Input Settings
+        # Input Settings
+        self.nameInput.setFocus()
         self.nameInput.setMaxLength(50)
         self.descriptionInput.setText("")
         self.descriptionInput.textChanged.connect(self.descriptionMaxLength)
+        self.dateInput.setFixedWidth(150)
         self.dateInput.dateChanged.connect(self.minDate)
 
+        # Button Settings
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, Qt.Horizontal, self)
+        
         buttonBox.accepted.connect(self.addTask)
         buttonBox.rejected.connect(self.reject)
 

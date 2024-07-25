@@ -36,7 +36,7 @@ def add_task(name: str, description: str, date: date):
         cursor.execute(query, ((name, description, date)))
 
         # Checking and commiting if query executed successfully
-        if cursor.rowcount() >= 1:
+        if cursor.rowcount >= 1:
             conn.commit()
             print("Added Task")
             return True
