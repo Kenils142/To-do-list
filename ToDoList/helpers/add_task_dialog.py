@@ -14,7 +14,7 @@ class AddTaskDialog(QDialog):
         self.setFixedSize(500, 250)
         self.setStyleSheet('''
             QDialog {
-                background-color: #150226;
+                background-color: #360559;
                 font-family:"Avenir Next LT Pro"
             }
             
@@ -75,7 +75,7 @@ class AddTaskDialog(QDialog):
         self.nameInput.setMaxLength(50)
         self.descriptionInput.setText("")
         self.descriptionInput.textChanged.connect(self.descriptionMaxLength)
-        self.dateInput.setFixedWidth(150)
+        self.dateInput.setFixedWidth(180)
         self.dateInput.dateChanged.connect(self.minDate)
 
         # Button Settings

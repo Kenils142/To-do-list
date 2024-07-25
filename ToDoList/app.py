@@ -46,12 +46,11 @@ class MainFrame(QMainWindow):
         addTaskButton.setFont(QFont(fontFamily, 18))
         addTaskButton.setStyleSheet(''' 
             QPushButton{
-                border: 1px outline #297401;
+                border:0;
                 background-color: #204D00;
                 border-radius: 7.5px;    
             }
             QPushButton:hover{
-                border: 1.5px inline #122600;
                 background-color: #122600;
                 border-radius: 7.5px;
             }
