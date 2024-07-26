@@ -2,6 +2,6 @@
 .idea/
 .vscode/
 Tests/
+ToDoList/helpers/__pycache__/
+
 ToDoList/database/*
-*/__pycache__/
-__pycache__/
