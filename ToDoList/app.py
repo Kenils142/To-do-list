@@ -2,7 +2,9 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
 from PySide6.QtGui import QFont
 from PySide6.QtCore import QSize
+from helpers.task_handler import get_tasks
 from helpers.add_task_dialog import AddTaskDialog
+from helpers.task_widget import TaskWidget
 
 fontFamily = "Avenir Next LT Pro"
 
@@ -19,12 +21,12 @@ class MainFrame(QMainWindow):
         # Empty widgets for controlling layout
         mainWidget = QWidget()
         headerWidget = QWidget()
-        tasksWidget = QWidget()
+        taskContainer = QWidget()
 
         # Layouts
         mainLayout = QVBoxLayout()
         headerLayout = QHBoxLayout()
-        tasksLayout = QVBoxLayout()
+        self.tasksLayout = QVBoxLayout()
 
         # Settings for mainLayout
         mainLayout.setContentsMargins(0,0,0,0)
@@ -50,6 +52,7 @@ class MainFrame(QMainWindow):
                 background-color: #204D00;
                 border-radius: 7.5px;    
             }
+            
             QPushButton:hover{
                 background-color: #122600;
                 border-radius: 7.5px;
@@ -57,21 +60,36 @@ class MainFrame(QMainWindow):
         ''')
         addTaskButton.clicked.connect(self.add_task_clicked)
 
+        # Displaying tasks
+        self.refresh()
+
         # Adding Widgets to headerLayout
         headerLayout.addWidget(nameLabel)
         headerLayout.addWidget(addTaskButton)
 
         # Stacking high level widgets and Layouts 
         headerWidget.setLayout(headerLayout)
-        tasksWidget.setLayout(tasksLayout)
+        taskContainer.setLayout(self.tasksLayout)
         mainLayout.addWidget(headerWidget)
-        mainLayout.addWidget(tasksWidget)
+        mainLayout.addWidget(taskContainer)
         mainWidget.setLayout(mainLayout)
         self.setCentralWidget(mainWidget)
-    
+
+
+    def refresh(self):
+        for i in reversed(range(self.tasksLayout.count())):
+            self.tasksLayout.itemAt(i).widget().setParent(None)
+        tasks = get_tasks()
+        for task in tasks:
+            print(task)
+            task_widget = TaskWidget(task[0], task[1], task[2], task[3])
+            self.tasksLayout.addWidget(task_widget)
+
+
     def add_task_clicked(self):
         dlg = AddTaskDialog()
         dlg.exec()
+        self.refresh()
 
 app = QApplication([])
 

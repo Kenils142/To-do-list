@@ -75,7 +75,7 @@ def edit_task(id, name, description, date):
         cursor.execute(query, (name, description, date, id))
 
         # Checking and commiting if query executed successfully
-        if cursor.rowcount() >= 1:
+        if cursor.rowcount == 1:
             conn.commit()
             return True
         
@@ -90,10 +90,7 @@ def del_task(id):
     
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
-        cursor.execute(query, (id))
+        cursor.execute(query, (id,))
         
-        if cursor.rowcount() > 0:
+        if cursor.rowcount > 0:
             conn.commit()
-            return True
-        
-    return False

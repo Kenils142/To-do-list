@@ -1,8 +1,8 @@
+from PySide6.QtCore import Qt, QDate
 from PySide6.QtWidgets import QDialog, QLabel, QLineEdit, QTextEdit, QDateEdit, QFormLayout, QDialogButtonBox
-from PySide6.QtGui import QFont
-from PySide6.QtCore import QSize, Qt, QDate
-from datetime import date
 from helpers.task_handler import add_task
+from helpers.styles import dialog_styles as style
+
 
 class AddTaskDialog(QDialog):
 
@@ -12,58 +12,7 @@ class AddTaskDialog(QDialog):
         # Settings for Dialog Frame
         self.setWindowTitle("Add Task")
         self.setFixedSize(500, 250)
-        self.setStyleSheet('''
-            QDialog {
-                background-color: #360559;
-                font-family:"Avenir Next LT Pro"
-            }
-            
-            QLabel{
-                color: #FBC5FF;
-                font-size: 18px;
-                font-weight: bold;
-                margin-right: 6px;
-            }
-                           
-            QLineEdit, QTextEdit, QDateEdit{
-                background-color: #F198FD;
-                color: #150226;
-                selection-background-color: #252226;
-                selection-color: #F198FD;
-                font-size: 16px;
-                font-weight: bold;
-            }
-                           
-            QLineEdit, QTextEdit {
-                padding: 2px 4px;
-                margin-bottom: 8px;
-                border 0;
-                border-radius: 5px;
-            }
-                           
-            QDateEdit:focus, QLineEdit:focus, QTextEdit:focus {
-                border: 0.6px solid #252226;
-                border-radius: 5px;
-            }
-
-            QDialogButtonBox {
-                margin-top: 16px;
-            }
-                           
-            QDialogButtonBox > * {
-                background-color: #F198FD;
-                color: #150226;
-                font-size: 18px;
-                font-weight: Bold;
-                padding: 4px 8px;
-                border-radius: 7.5px
-            }        
-            
-            QDialogButtonBox > *:hover, QDialogButtonBox > *:focus{
-                background-color: #E06AF9;
-                border: 1px solid #252226;                       
-            }
-        ''')
+        self.setStyleSheet(style)
 
         # Layouts
         formLayout = QFormLayout(self)
@@ -99,7 +48,11 @@ class AddTaskDialog(QDialog):
 
     def addTask(self):
         if self.nameInput.text() != "" and self.descriptionInput.toPlainText() != None:
-            add_task(self.nameInput.text(), self.descriptionInput.toPlainText(), self.dateInput.date().toString('yyyy-MM-dd'))
+            add_task(
+                self.nameInput.text(),
+                self.descriptionInput.toPlainText(),
+                self.dateInput.date().toString('yyyy-MM-dd')
+            )
             self.accept()
     
     def descriptionMaxLength(self):
@@ -109,7 +62,3 @@ class AddTaskDialog(QDialog):
     def minDate(self):
         if self.dateInput.date() < QDate.currentDate():
             self.dateInput.setDate(QDate.currentDate())
-
-
-
-

@@ -1,5 +1,7 @@
 .venv/
+.idea/
 .vscode/
 Tests/
 ToDoList/database/*
-*/pycache/
+*/__pycache__/
+__pycache__/
