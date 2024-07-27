@@ -4,4 +4,4 @@
 Tests/
 ToDoList/helpers/__pycache__/
 
-ToDoList/database/*
+ToDoList/Database/*

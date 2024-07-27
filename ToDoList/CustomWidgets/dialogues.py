@@ -1,7 +1,10 @@
 from PySide6.QtCore import Qt, QDate
-from PySide6.QtWidgets import QDialog, QLabel, QLineEdit, QTextEdit, QDateEdit, QFormLayout, QDialogButtonBox
+from PySide6.QtWidgets import (QDialog, QLabel, QLineEdit,
+                               QTextEdit, QDateEdit, QFormLayout,
+                               QDialogButtonBox)
 
-from helpers.styles import dialog_styles
+from Stylesheets.dialog_styles import style
+from DataAccess.db_utils import add_task, edit_task
 
 
 class FormDialog(QDialog):
@@ -11,7 +14,7 @@ class FormDialog(QDialog):
         # Dialog Frame Settings
         self.setWindowTitle("Form Dialog Template")
         self.setFixedSize(500, 250)
-        self.setStyleSheet(dialog_styles)
+        self.setStyleSheet(style)
 
         # Layouts
         layout = QFormLayout(self)
@@ -30,7 +33,6 @@ class FormDialog(QDialog):
         self.nameInput.setFocus()
         self.nameInput.setMaxLength(50)
 
-        self.descriptionInput.setText("")
         self.descriptionInput.textChanged.connect(self.descriptionMaxLength)
 
         self.endDateInput.dateChanged.connect(self.minEndDate)
@@ -57,7 +59,41 @@ class FormDialog(QDialog):
             description = description[0:501]
             self.descriptionInput.setText(description)
 
-
     def minEndDate(self):
         if self.endDateInput.date() < QDate.currentDate():
             self.endDateInput.setDate(QDate.currentDate())
+
+
+class AddTaskDialog(FormDialog):
+
+    def __init__(self):
+        super().__init__()
+
+        self.buttonBox.accepted.connect(self.addTask)
+
+    def addTask(self):
+        name = self.nameInput.text()
+
+        if name != "":
+            add_task(
+                name, self.descriptionInput.toPlainText(),
+                self.endDateInput.date().toString('yyyy-MM-dd')
+            )
+            self.accept()
+
+
+class EditTaskDialog(FormDialog):
+    def __init__(self, id, name, description, end_date):
+        self.id = id
+        super().__init__(name, description, end_date)
+
+        self.buttonBox.accepted.connect(self.editTask)
+
+    def editTask(self):
+        name = self.nameInput.text()
+        if name != "":
+            edit_task(
+                self.id, name, self.descriptionInput.toPlainText(),
+                self.endDateInput.date().toString('yyyy-MM-dd')
+            )
+            self.accept()

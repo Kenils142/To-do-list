@@ -3,10 +3,11 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget,
                                QVBoxLayout, QHBoxLayout,
                                QLabel, QPushButton)
 
-from helpers.styles import header_styles
-from helpers.add_task_dialog import AddTaskDialog
-from helpers.task_handler import get_tasks
-from helpers.task_widget import TaskWidget
+from Stylesheets.mainframe_styles import header_styles
+from CustomWidgets.dialogues import AddTaskDialog
+from CustomWidgets.task_widget import TaskWidget
+from DataAccess.db_utils import get_tasks
+
 
 
 class MainFrame(QMainWindow):
@@ -69,6 +70,9 @@ class MainFrame(QMainWindow):
         for task in tasks:
             taskWidget = TaskWidget(task[0], task[1], task[2], task[3])
             self.taskContainerLayout.addWidget(taskWidget)
+
+            taskWidget.editButton.clicked.connect(self.refreshTasks)
+            taskWidget.doneButton.clicked.connect(self.refreshTasks)
 
 
     def addTaskClicked(self):

@@ -1,5 +1,9 @@
-from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QWidget
-from helpers.task_handler import del_task
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
+                               QLabel, QPushButton)
+from PySide6.QtCore import QDate
+
+from CustomWidgets.dialogues import EditTaskDialog
+from DataAccess.db_utils import del_task
 
 
 class TaskWidget(QWidget):
@@ -11,9 +15,10 @@ class TaskWidget(QWidget):
         self.name = name
         self.description = description
         self.end_date = end_date
+        self.hasChangeOccurred = False
 
         # Widgets
-        self.bodyWidget = QWidget()
+        self.bodyContainer = QWidget()
 
         # Layouts
         mainLayout = QVBoxLayout()
@@ -24,49 +29,66 @@ class TaskWidget(QWidget):
 
         # Labels
         nameLabel = QLabel(name)
+
         descriptionLabel = QLabel(f"Description: {description}")
         dateLabel = QLabel(f"End Date: {end_date}")
 
         # Widget settings
-        self.bodyWidget.hide()
+        self.bodyContainer.hide()
 
         # Buttons
         self.moreInfoButton = QPushButton("More")
-        editButton = QPushButton("Edit")
-        doneButton = QPushButton("Done")
+
+        self.editButton = QPushButton("Edit")
+        self.doneButton = QPushButton("Done")
 
         # Button settings
         self.moreInfoButton.setCheckable(True)
         self.moreInfoButton.clicked.connect(self.moreInfoClicked)
-        editButton.clicked.connect(self.editButtonClicked)
-        doneButton.clicked.connect(self.doneButtonClicked)
+
+        self.editButton.clicked.connect(self.editButtonClicked)
+
+        self.doneButton.clicked.connect(self.doneButtonClicked)
 
         # Adding widgets and layouts to respective layouts/Widgets
         headerLayout.addWidget(nameLabel)
         headerLayout.addWidget(self.moreInfoButton)
+
         contentLayout.addWidget(descriptionLabel)
         contentLayout.addWidget(dateLabel)
-        buttonLayout.addWidget(editButton)
-        buttonLayout.addWidget(doneButton)
+
+        buttonLayout.addWidget(self.editButton)
+        buttonLayout.addWidget(self.doneButton)
+
         bodyLayout.addLayout(contentLayout)
         bodyLayout.addLayout(buttonLayout)
-        self.bodyWidget.setLayout(bodyLayout)
+
+        self.bodyContainer.setLayout(bodyLayout)
+
         mainLayout.addLayout(headerLayout)
-        mainLayout.addWidget(self.bodyWidget)
+        mainLayout.addWidget(self.bodyContainer)
+
         self.setLayout(mainLayout)
+
 
     def moreInfoClicked(self, isChecked):
         if isChecked:
             self.moreInfoButton.setText("Less")
-            self.bodyWidget.show()
+            self.bodyContainer.show()
         else:
             self.moreInfoButton.setText("More")
-            self.bodyWidget.hide()
+            self.bodyContainer.hide()
+
 
     def editButtonClicked(self):
-        pass
+        # converting end_date to QDate and checking if >= Current Date
+        end_date = QDate.fromString(self.end_date, "yyyy-MM-dd")
+        end_date = end_date if end_date >= QDate.currentDate() \
+            else QDate.currentDate()
+
+        dialog = EditTaskDialog(self.id, self.name, self.description,
+                                end_date)
+        dialog.exec()
 
     def doneButtonClicked(self):
-        print(self.id, type(self.id))
         del_task(self.id)
-        self.hide()
