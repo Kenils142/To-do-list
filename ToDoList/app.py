@@ -1,97 +1,85 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
+from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget,
+                               QVBoxLayout, QHBoxLayout,
+                               QLabel, QPushButton)
 from PySide6.QtGui import QFont
 from PySide6.QtCore import QSize
-from helpers.task_handler import get_tasks
+
+from helpers.styles import header_styles
 from helpers.add_task_dialog import AddTaskDialog
+from helpers.task_handler import get_tasks
 from helpers.task_widget import TaskWidget
 
-fontFamily = "Avenir Next LT Pro"
 
 class MainFrame(QMainWindow):
-
     def __init__(self):
         super(MainFrame, self).__init__()
 
-        # Settings for MainFrame
+        # Mainframe Settings
         self.setWindowTitle("To Do List")
         self.setFixedWidth(800)
         self.setMinimumHeight(500)
 
-        # Empty widgets for controlling layout
-        mainWidget = QWidget()
-        headerWidget = QWidget()
+        # Containers
+        mainContainer = QWidget()
+        headerContainer = QWidget()
         taskContainer = QWidget()
 
         # Layouts
-        mainLayout = QVBoxLayout()
-        headerLayout = QHBoxLayout()
-        self.tasksLayout = QVBoxLayout()
+        mainContainerLayout = QVBoxLayout()
+        headerContainerLayout = QHBoxLayout()
+        self.taskContainerLayout = QVBoxLayout()
 
-        # Settings for mainLayout
-        mainLayout.setContentsMargins(0,0,0,0)
+        # Container settings
+        headerContainer.setStyleSheet(header_styles)
 
-        # Settings for headerLayout
-        headerLayout.setContentsMargins(20,0,20,0)
+        # Layout settings
+        mainContainerLayout.setContentsMargins(0, 0, 0, 0)
 
-        # Operations for Header Widget
-        headerWidget.setStyleSheet("background-color: #319B05")
-        headerWidget.setFixedHeight(75)
-
-        # Header Name Label
-        nameLabel = QLabel("To Do List")
-        nameLabel.setFont(QFont(fontFamily, 22, QFont.Bold))
-
-        # Add Task Button
+        # Header Container Contents
+        headerLabel = QLabel("To Do List")
+        headerLabel.setStyleSheet(header_styles)
         addTaskButton = QPushButton(" + Add Task ")
-        addTaskButton.setFixedSize(QSize(150, 50))
-        addTaskButton.setFont(QFont(fontFamily, 18))
-        addTaskButton.setStyleSheet(''' 
-            QPushButton{
-                border:0;
-                background-color: #204D00;
-                border-radius: 7.5px;    
-            }
-            
-            QPushButton:hover{
-                background-color: #122600;
-                border-radius: 7.5px;
-            }
-        ''')
-        addTaskButton.clicked.connect(self.add_task_clicked)
+        addTaskButton.clicked.connect(self.addTaskClicked)
+        addTaskButton.setStyleSheet(header_styles)
 
-        # Displaying tasks
-        self.refresh()
+        # Task Container Contents
+        self.refreshTasks()
 
-        # Adding Widgets to headerLayout
-        headerLayout.addWidget(nameLabel)
-        headerLayout.addWidget(addTaskButton)
+        # Adding/Setting widgets/layouts into each other
+        headerContainerLayout.addWidget(headerLabel)
+        headerContainerLayout.addWidget(addTaskButton)
+        headerContainer.setLayout(headerContainerLayout)
 
-        # Stacking high level widgets and Layouts 
-        headerWidget.setLayout(headerLayout)
-        taskContainer.setLayout(self.tasksLayout)
-        mainLayout.addWidget(headerWidget)
-        mainLayout.addWidget(taskContainer)
-        mainWidget.setLayout(mainLayout)
-        self.setCentralWidget(mainWidget)
+        taskContainer.setLayout(self.taskContainerLayout)
+
+        mainContainerLayout.addWidget(headerContainer)
+        mainContainerLayout.addWidget(taskContainer)
+        mainContainer.setLayout(mainContainerLayout)
+
+        self.setCentralWidget(mainContainer)
 
 
-    def refresh(self):
-        for i in reversed(range(self.tasksLayout.count())):
-            self.tasksLayout.itemAt(i).widget().setParent(None)
+    def refreshTasks(self):
+        # removing old tasks from layout
+        for i in reversed(range(self.taskContainerLayout.count())):
+            self.taskContainerLayout.itemAt(i).widget().setParent(None)
+
         tasks = get_tasks()
+
         for task in tasks:
-            print(task)
-            task_widget = TaskWidget(task[0], task[1], task[2], task[3])
-            self.tasksLayout.addWidget(task_widget)
+            taskWidget = TaskWidget(task[0], task[1], task[2], task[3])
+            self.taskContainerLayout.addWidget(taskWidget)
 
 
-    def add_task_clicked(self):
-        dlg = AddTaskDialog()
-        dlg.exec()
-        self.refresh()
+    def addTaskClicked(self):
+        dialog = AddTaskDialog()
+        dialog.exec()
 
-app = QApplication([])
+        self.refreshTasks()
+
+
+app = QApplication()
 
 window = MainFrame()
 window.show()
