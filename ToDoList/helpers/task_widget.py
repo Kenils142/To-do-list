@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QWidget
 from helpers.task_handler import del_task
 
+
 class TaskWidget(QWidget):
 
     def __init__(self, id, name, description, end_date):

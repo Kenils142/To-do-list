@@ -2,8 +2,6 @@ import sys
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget,
                                QVBoxLayout, QHBoxLayout,
                                QLabel, QPushButton)
-from PySide6.QtGui import QFont
-from PySide6.QtCore import QSize
 
 from helpers.styles import header_styles
 from helpers.add_task_dialog import AddTaskDialog
@@ -35,6 +33,7 @@ class MainFrame(QMainWindow):
 
         # Layout settings
         mainContainerLayout.setContentsMargins(0, 0, 0, 0)
+        headerContainer.setContentsMargins(20, 0, 20, 0)
 
         # Header Container Contents
         headerLabel = QLabel("To Do List")

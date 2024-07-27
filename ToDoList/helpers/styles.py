@@ -4,10 +4,6 @@ header_styles = '''
         max-height: 75px;
     }
     
-    QHBoxLayout {
-        margin: 20px 0;
-    }
-    
      QLabel {
         font-family: "Avenir Next LT Pro";
         font-size: 22px;
@@ -57,6 +53,10 @@ dialog_styles = '''
         margin-bottom: 8px;
         border 0;
         border-radius: 5px;
+    }
+    
+    QDateEdit {
+        max-width: 180px;
     }
                    
     QDateEdit:focus, QLineEdit:focus, QTextEdit:focus {
