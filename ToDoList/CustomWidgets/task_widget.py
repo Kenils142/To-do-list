@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
                                QLabel, QPushButton)
-from PySide6.QtCore import QDate
+from PySide6.QtCore import QDate, Qt
 
 from CustomWidgets.dialogues import EditTaskDialog
 from DataAccess.db_utils import del_task
@@ -22,16 +22,27 @@ class TaskWidget(QWidget):
 
         # Layouts
         mainLayout = QVBoxLayout()
+
         headerLayout = QHBoxLayout()
+
         bodyLayout = QHBoxLayout()
+        bodyLayout.setContentsMargins(10, 0, 0, 0)
+        bodyLayout.setSpacing(20)
+
         contentLayout = QVBoxLayout()
+        contentLayout.setSpacing(10)
+
         buttonLayout = QVBoxLayout()
+        buttonLayout.setAlignment(Qt.AlignmentFlag.AlignBottom)
+        buttonLayout.setSpacing(10)
 
         # Labels
         nameLabel = QLabel(name)
 
-        descriptionLabel = QLabel(f"Description: {description}")
-        dateLabel = QLabel(f"End Date: {end_date}")
+        descriptionLabel = QLabel(f"<b>Description:</b> <br />{description}")
+        descriptionLabel.setWordWrap(True)
+
+        dateLabel = QLabel(f"<b>End Date:</b> {end_date}")
 
         # Widget settings
         self.bodyContainer.hide()
@@ -45,10 +56,13 @@ class TaskWidget(QWidget):
         # Button settings
         self.moreInfoButton.setCheckable(True)
         self.moreInfoButton.clicked.connect(self.moreInfoClicked)
+        self.moreInfoButton.setFixedWidth(60)
 
         self.editButton.clicked.connect(self.editButtonClicked)
+        self.editButton.setFixedWidth(60)
 
         self.doneButton.clicked.connect(self.doneButtonClicked)
+        self.doneButton.setFixedWidth(60)
 
         # Adding widgets and layouts to respective layouts/Widgets
         headerLayout.addWidget(nameLabel)

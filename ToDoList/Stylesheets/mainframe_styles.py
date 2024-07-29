@@ -1,7 +1,6 @@
-header_styles = '''
+title_bar_styles = '''
     QWidget {
         background-color: #319B05;
-        max-height: 75px;
     }
     
      QLabel {
@@ -12,7 +11,7 @@ header_styles = '''
     
     QPushButton {
         max-width: 150px;
-        height: 50px;
+        max-height: 50px;
         font-family: "Avenir Next LT Pro";
         font-size: 18px;
         border: 0;
