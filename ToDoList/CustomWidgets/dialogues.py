@@ -69,6 +69,7 @@ class AddTaskDialog(FormDialog):
     def __init__(self):
         super().__init__()
 
+        self.setWindowTitle("Add Task")
         self.buttonBox.accepted.connect(self.addTask)
 
     def addTask(self):
@@ -86,6 +87,8 @@ class EditTaskDialog(FormDialog):
     def __init__(self, id, name, description, end_date):
         self.id = id
         super().__init__(name, description, end_date)
+
+        self.setWindowTitle("Edit Task")
 
         self.buttonBox.accepted.connect(self.editTask)
 
