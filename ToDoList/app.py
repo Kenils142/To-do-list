@@ -36,6 +36,7 @@ class MainFrame(QMainWindow):
         tasksScrollAreaContainer.setWidgetResizable(True)
         tasksScrollAreaContainer.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         tasksScrollAreaContainer.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        tasksScrollAreaContainer.setStyleSheet('background-color: #BEFEBA;')
 
         tasksContainer = QWidget()
 
@@ -48,7 +49,7 @@ class MainFrame(QMainWindow):
         titleContainerLayout.setContentsMargins(20, 0, 20, 0)
 
         self.tasksContainerLayout = QVBoxLayout()
-        self.tasksContainerLayout.setContentsMargins(20, 20, 20, 20)
+        # self.tasksContainerLayout.setContentsMargins()
         self.tasksContainerLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Title Contents
@@ -100,7 +101,7 @@ class MainFrame(QMainWindow):
             taskWidget.doneButton.clicked.connect(self.refreshTasksContainer)
 
 
-app = QApplication()
+app = QApplication([])
 
 window = MainFrame()
 window.show()
